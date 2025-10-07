@@ -1,0 +1,11 @@
+material,test_type,parameter,energy_total,energy_per_atom,path
+AlAs,encut,E300,-9.37509683,-4.687548415,./convergence_tests/AlAs/conv_cutoff/E300
+AlAs,encut,E400,-9.37842492,-4.68921246,./convergence_tests/AlAs/conv_cutoff/E400
+AlAs,encut,E500,-9.37892924,-4.68946462,./convergence_tests/AlAs/conv_cutoff/E500
+AlAs,encut,E600,-9.37902955,-4.689514775,./convergence_tests/AlAs/conv_cutoff/E600
+AlAs,encut,E700,-9.37916614,-4.68958307,./convergence_tests/AlAs/conv_cutoff/E700
+AlAs,kpt,k10x10x10,-9.38031561,-4.690157805,./convergence_tests/AlAs/conv_kpt/k10x10x10
+AlAs,kpt,k12x12x12,-9.38053267,-4.690266335,./convergence_tests/AlAs/conv_kpt/k12x12x12
+AlAs,kpt,k4x4x4,-9.26394668,-4.63197334,./convergence_tests/AlAs/conv_kpt/k4x4x4
+AlAs,kpt,k6x6x6,-9.36848794,-4.68424397,./convergence_tests/AlAs/conv_kpt/k6x6x6
+AlAs,kpt,k8x8x8,-9.37892924,-4.68946462,./convergence_tests/AlAs/conv_kpt/k8x8x8

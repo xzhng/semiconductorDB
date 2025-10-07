@@ -1,0 +1,5 @@
+Metadata-Version: 2.1
+Name: semiconductor_db
+Version: 0.1.0
+Requires-Dist: pandas
+Requires-Dist: matplotlib
