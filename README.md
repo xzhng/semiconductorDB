@@ -1,20 +1,20 @@
-# 🧠 SemiconductorDB
+# SemiconductorDB
 
-**SemiconductorDB** is a lightweight Python package for managing and visualizing convergence data in semiconductor calculations.  
+SemiconductorDB is a lightweight Python package for managing and visualizing convergence data in semiconductor calculations.  
 It provides a simple database-like interface for storing k-point and ENCUT convergence tests, retrieving results, and generating plots.
 
 ---
 
-## 🚀 Features
+## Features
 
-- 📊 Analyze and visualize **k-point** and **ENCUT** convergence trends  
-- 🧩 Unified interface for multiple materials  
-- 🧠 Designed for **ab initio** workflows (e.g., VASP, Quantum ESPRESSO)  
-- 🖼️ Built-in plotting utilities via Matplotlib  
+- Analyze and visualize k-point and ENCUT convergence trends  
+- Unified interface for multiple materials  
+- Designed for ab initio workflows (e.g., VASP, Quantum ESPRESSO)  
+- Built-in plotting utilities using Matplotlib  
 
 ---
 
-## 📦 Installation
+## Installation
 
 Clone the repository and install in editable mode:
 
