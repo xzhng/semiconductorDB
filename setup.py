@@ -7,6 +7,7 @@ setup(
     install_requires=[
         "pandas",
         "matplotlib",
+        "streamlit"
         # add any other dependencies here
     ],
 )
