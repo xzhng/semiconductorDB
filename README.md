@@ -30,7 +30,7 @@ pip install -e .
 from semiconductor_db import ConvergenceDB
 db = ConvergenceDB()
 print(db)
-kpts=db.get("GaN", "kpts")
+kpts=db.get("GaN", "kpt")
 print(kpts)
 encut=db.get("GaN","encut")
 print(encut)
