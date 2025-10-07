@@ -26,31 +26,29 @@ pip install -e .
 
 ## usages: temporary listing everything
 
-Convergence tests
 ```bash
+# Convergence
 from semiconductor_db import ConvergenceDB
-db = ConvergenceDB()
-print(db)
-kpts=db.get("GaN","zb", "kpt")
-print(kpts)
-encut=db.get("GaN","zb","encut")
-print(encut)
-db.plot("GaN","zb")
-```
-Vinet equation of state fit
-```bash
+conv = ConvergenceDB()
+
+kpts = conv.get(material="GaN", structure="zb", conv_type="kpt")
+encut = conv.get(material="GaN", structure="zb", conv_type="encut")
+conv.plot(material="GaN", structure="zb")
+
+# E-V / Vinet
 from semiconductor_db import e_v_db
+ev = e_v_db()
 
-db = e_v_db()
-print(db.list_materials())
-
-# Get scalar properties
-print(db.get("AlAs","zb", "E"))   # equilibrium energy
-print(db.get("AlAs","zb", "V"))   # equilibrium volume
-print(db.get("AlAs","zb", "B"))   # bulk modulus
-print(db.get("AlAs","zb", "Bp"))  # bulk modulus derivative
-
-# Get E–V data
-df = db.get("AlAs","zb", "E-V")
-print(df)
+E0 = ev.get(material="AlAs", structure="zb", fit_param="E")
+V0 = ev.get(material="AlAs", structure="zb", fit_param="V")
+B = ev.get(material="AlAs", structure="zb", fit_param="B")
+Bprime = ev.get(material="AlAs", structure="zb", fit_param="Bp")
+curve = ev.get(material="AlAs", structure="zb", fit_param="E-V")
+print(E0,V0,B,Bprime)
+print(curve)
 ```
+
+## web interface
+
+The code currently uses streamlit for web interface. To access, do: 
+streamlit run app.py
