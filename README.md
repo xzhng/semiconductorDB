@@ -22,3 +22,16 @@ Clone the repository and install in editable mode:
 git clone git@github.com:xzhng/semiconductorDB.git
 cd semiconductorDB
 pip install -e .
+```
+
+## usages: temporary listing everything
+
+```bash
+from semiconductor_db import ConvergenceDB
+db = ConvergenceDB()
+print(db)
+kpts=db.get("GaN", "kpts")
+print(kpts)
+encut=db.get("GaN","encut")
+print(encut)
+db.plot("GaN")
