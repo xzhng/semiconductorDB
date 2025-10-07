@@ -51,4 +51,6 @@ print(curve)
 ## web interface
 
 The code currently uses streamlit for web interface. To access, do: 
+```bash
 streamlit run app.py
+```
