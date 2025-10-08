@@ -1,9 +1,0 @@
-setup.py
-semiconductor_db/__init__.py
-semiconductor_db/app.py
-semiconductor_db/convergence.py
-semiconductor_db.egg-info/PKG-INFO
-semiconductor_db.egg-info/SOURCES.txt
-semiconductor_db.egg-info/dependency_links.txt
-semiconductor_db.egg-info/requires.txt
-semiconductor_db.egg-info/top_level.txt
