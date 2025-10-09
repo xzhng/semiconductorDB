@@ -3,6 +3,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
+st.set_page_config(page_title="Semiconductor DB", layout="wide")
+
+# === TOP FIGURE ===
+st.logo("logo.png", size="large")
+
 from semiconductor_db import (
     ConvergenceDB, get_kpt_convergence, get_encut_convergence, e_v_db
 )
