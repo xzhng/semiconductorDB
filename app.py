@@ -18,7 +18,7 @@ st.title("Semiconductor Database Explorer")
 # Sidebar page selector
 mode = st.sidebar.radio(
     "Select view",
-    ["Convergence Explorer", "E-V / Vinet Fit Explorer"]
+    ["Convergence Explorer", "E-V / Vinet Fit Explorer", "Alloy Property Explorer"]
 )
 
 # ============================================================
@@ -247,6 +247,115 @@ elif mode == "E-V / Vinet Fit Explorer":
                     ax.set_title(f"{material} ({structure}, {functional}) E–V curve and Vinet fit")
                     ax.legend()
                     st.pyplot(fig)
+
+        except Exception as e:
+            st.error(f"Error: {e}")
+            
+# ============================================================
+# === 3. Alloy Property Explorer =============================
+# ============================================================
+elif mode == "Alloy Property Explorer":
+    from semiconductor_db import AlloyDB
+
+    st.header("Alloy Property Explorer")
+    st.write("Visualize alloy properties as a function of alloy composition.")
+
+    try:
+        db = AlloyDB("alloy")
+    except Exception as e:
+        st.error(f"Could not load alloy database: {e}")
+        st.stop()
+
+    # === Sidebar options ===
+    with st.sidebar:
+        st.header("Select Parameters")
+
+        # Dynamically list all unique elemental pairs
+        all_binaries = db.binaries()
+        binary_options = sorted(set([" ".join(sorted(b.split())) for b in all_binaries]))  # normalize
+        binary = st.selectbox("Binary System", binary_options)
+
+        # Split components for plotting
+        components = sorted(binary.split())
+        comp1, comp2 = components[0], components[1]
+
+        structures = db.structures(binary)
+        structure = st.selectbox("Structure", structures)
+
+        functionals = db.functionals(binary, structure)
+        functional = st.selectbox("Functional", functionals)
+
+        property_map = {
+            "Band Gap (eV)": "gap",
+            "Volume (Å³ per formula unit)": "volume",
+            "Enthalpy of Mixing (meV per formula unit)": "h_mix"
+        }
+        property_label = st.selectbox("Property", list(property_map.keys()))
+        prop_key = property_map[property_label]
+
+        run = st.button("Show Results")
+
+    if run:
+        try:
+            df = db.df[
+                (db.df["binary"].isin([binary, " ".join(components[::-1])])) &
+                (db.df["structure"] == structure) &
+                (db.df["functional"] == functional)
+            ].copy()
+
+            if df.empty:
+                st.warning(f"No data found for {binary} ({structure}, {functional})")
+            else:
+                col1 = f"x_{components[0]}"
+                col2 = f"x_{components[1]}"
+                df = df.sort_values(by=col2)
+
+                # Property mapping
+                if prop_key == "gap":
+                    prop_col = "bandgap_Gamma(eV)"
+                    y_label = "Band Gap (eV)"
+                elif prop_key == "volume":
+                    prop_col = "volume(Ang^3)"
+                    y_label = "Volume (Å³ per formula unit)"
+                elif prop_key == "h_mix":
+                    prop_col = "hmix_meV_per_formula"
+                    y_label = "Enthalpy of Mixing (meV per formula unit)"
+
+                # Clean data
+                df = df.dropna(subset=[prop_col])
+                if df.empty:
+                    st.warning("No valid data to plot for the selected property.")
+                else:
+                    x = df[col2].values  # fraction of second component
+                    y = df[prop_col].values
+
+                    fig, ax = plt.subplots()
+                    ax.plot(x, y, "o", color="k", label="Data")
+                    ax.set_xlabel(f"Fraction of {components[1]}")
+                    ax.set_ylabel(y_label)
+                    ax.set_title(f"{property_label} vs Composition for {binary} ({structure}, {functional})")
+
+                    # === Band gap bowing fit ===
+                    if prop_key == "gap" and len(df) >= 3:
+                        from scipy.optimize import curve_fit
+
+                        def bowing_model(x, b):
+                            return (1 - x) * y[0] + x * y[-1] - b * x * (1 - x)
+
+                        try:
+                            popt, _ = curve_fit(bowing_model, x, y)
+                            b = popt[0]
+                            x_fit = np.linspace(0, 1, 200)
+                            y_fit = bowing_model(x_fit, b)
+                            ax.plot(x_fit, y_fit, "--", color="C1", label=f"Bowing fit (b = {b:.3f} eV)")
+                            st.markdown(f"**Fitted bowing parameter:** b = {b:.3f} eV")
+                        except Exception as e:
+                            st.warning(f"Bowing fit failed: {e}")
+
+                    ax.legend()
+                    st.pyplot(fig)
+
+                    st.dataframe(df[[col1, col2, prop_col]], use_container_width=True)
 
         except Exception as e:
             st.error(f"Error: {e}")
